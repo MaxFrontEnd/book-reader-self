@@ -28,6 +28,9 @@
     "prettier": "^1.15.2"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.6",
+    "classname": "0.0.0",
+    "classnames": "^2.2.6",
     "react": "^16.6.3",
     "react-dom": "^16.6.3"
   }

@@ -1,15 +1,18 @@
 import React from "react";
 import { render } from "react-dom";
 import Booklist from "./Booklist";
+import HeadLine from "./Headline";
+const URL = "http://localhost:3000/books-plans";
 class App extends React.Component {
   render() {
     return (
-      <div>
+      <div className="main">
         <header className="header">
-          <p>
-            <span className="firstLetter">К</span>ниги Мудрость
+          <p className="header-title">
+            <span className="firstLetter">К</span>нигочет
           </p>
         </header>
+        <HeadLine />
         <Booklist />
       </div>
     );

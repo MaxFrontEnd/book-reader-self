@@ -1,8 +1,6 @@
 import React from "react";
-import { render } from "react-dom";
-import { isArray } from "util";
 const URL = "http://localhost:3000/books-plans";
-
+import Book from "./Book";
 class Booklist extends React.Component {
   constructor(props) {
     super(props);
@@ -30,11 +28,23 @@ class Booklist extends React.Component {
   }
 
   render() {
+    let total = 0;
     if (this.state.books && this.state.books.length > 0) {
       return (
-        <div>
-          {this.state.books.map((book, index) => {
-            return <p key={book.id}>{book.title}</p>;
+        <div className="book-container">
+          {this.state.books.map(book => {
+            total = total += 1;
+            return (
+              <Book
+                className="new"
+                key={book.id}
+                id={book.id}
+                title={book.title}
+                author={book.author}
+                read={book.readed}
+                total
+              />
+            );
           })}
         </div>
       );

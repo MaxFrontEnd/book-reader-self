@@ -1,39 +1,57 @@
 import React from "react";
-const URL = "http://localhost:3000/books-plans";
 import Book from "./Book";
+import PropTypes from "prop-types";
+import HeadLine from "./Headline";
 class Booklist extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      read: 0,
+      not_read: 0
     };
+    this.count = this.count.bind(this);
+    this.add_to_readed = this.add_to_readed.bind(this);
+    this.remove_from_readed = this.remove_from_readed.bind(this);
   }
-  componentDidMount() {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", URL, true);
-    xhr.onload = () => {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          this.setState({ books: JSON.parse(xhr.responseText) }, () => {});
-        }
-      } else {
-        console.error(xhr.statusText);
-      }
-    };
-    xhr.onerror = () => {
-      console.error(xhr.statusText);
-    };
 
-    xhr.send();
+  add_to_readed = () => {
+    this.setState(state => {
+      return { read: (state.read += 1), not_read: (state.not_read -= 1) };
+    });
+  };
+
+  remove_from_readed = () => {
+    this.setState(state => {
+      return { read: (state.read -= 1), not_read: (state.not_read += 1) };
+    });
+  };
+
+  count() {
+    if (this.props.books && this.props.books.length > 0) {
+      this.props.books.map(book => {
+        console.log(book.readed);
+        book.readed
+          ? this.setState(state => {
+              return { read: (state.read += 1) };
+            })
+          : this.setState(state => {
+              return { not_read: (state.not_read += 1) };
+            });
+      });
+    }
   }
 
   render() {
-    let total = 0;
-    if (this.state.books && this.state.books.length > 0) {
+    if (this.props.books && this.props.books.length > 0) {
       return (
         <div className="book-container">
-          {this.state.books.map(book => {
-            total = total += 1;
+          <HeadLine
+            count={this.count}
+            read={this.state.read}
+            not_read={this.state.not_read}
+            len={this.props.books.length}
+          />
+          {this.props.books.map(book => {
             return (
               <Book
                 className="new"
@@ -42,7 +60,9 @@ class Booklist extends React.Component {
                 title={book.title}
                 author={book.author}
                 read={book.readed}
-                total
+                count={this.count}
+                add_to_readed={this.add_to_readed}
+                remove_from_readed={this.remove_from_readed}
               />
             );
           })}
@@ -54,4 +74,9 @@ class Booklist extends React.Component {
   }
 }
 
+Booklist.propTypes = {
+  countR: PropTypes.func,
+  countnR: PropTypes.func,
+  books: PropTypes.array
+};
 export default Booklist;

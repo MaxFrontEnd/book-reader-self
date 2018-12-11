@@ -37,6 +37,9 @@ class Book extends React.Component {
   }
   _read = event => {
     event.preventDefault();
+    this.state.read
+      ? this.props.remove_from_readed()
+      : this.props.add_to_readed();
     this.setState(
       {
         read: !this.state.read
@@ -74,6 +77,8 @@ class Book extends React.Component {
 }
 
 Book.propTypes = {
+  add_to_readed: PropTypes.func,
+  remove_from_readed: PropTypes.func,
   read: PropTypes.bool,
   id: PropTypes.number,
   title: PropTypes.string,

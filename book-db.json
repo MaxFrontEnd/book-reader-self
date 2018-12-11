@@ -25,28 +25,22 @@
       "readed": false
     },
     {
-      "id": 5,
-      "title": "Июнь",
-      "author": "Дмитрий быков",
-      "readed": false
+      "title": "12 стульев",
+      "author": "adfads",
+      "readed": false,
+      "id": 5
     },
     {
-      "id": 6,
-      "title": "Солярис",
-      "author": "Станислав Лем",
-      "readed": false
+      "title": "werwer",
+      "author": "werwer",
+      "readed": false,
+      "id": 6
     },
     {
-      "id": 7,
-      "title": "Город еритиков",
-      "author": "Федерико Андахази",
-      "readed": true
-    },
-    {
-      "id": 8,
-      "title": "Машина времени",
-      "author": "Герберт Велс",
-      "readed": true
+      "title": "123",
+      "author": "213",
+      "readed": false,
+      "id": 7
     }
   ]
 }

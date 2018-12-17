@@ -2,18 +2,53 @@ import React from "react";
 import Book from "./Book";
 import PropTypes from "prop-types";
 import HeadLine from "./Headline";
+import AddBook from "./AddBook";
+const URL = "http://localhost:3000/books-plans";
 class Booklist extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      done: false,
       read: 0,
       not_read: 0
     };
+    this.books = null;
     this.count = this.count.bind(this);
     this.add_to_readed = this.add_to_readed.bind(this);
+    this.add_to_not_readed = this.add_to_not_readed.bind(this);
     this.remove_from_readed = this.remove_from_readed.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+    this.rendeIt = this.rendeIt.bind(this);
   }
 
+  fetchData() {
+    fetch(URL)
+      .then(response => {
+        response.json().then(data => {
+          Booklist.books = data;
+          // Для отрисовки после попадания данных в переменную books
+          this.setState({ done: !this.state.done });
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  rendeIt() {
+    this.fetchData();
+    this.add_to_not_readed();
+  }
+
+  add_to_not_readed = () => {
+    this.setState(state => {
+      return { not_read: (state.not_read += 1) };
+    });
+  };
   add_to_readed = () => {
     this.setState(state => {
       return { read: (state.read += 1), not_read: (state.not_read -= 1) };
@@ -27,9 +62,8 @@ class Booklist extends React.Component {
   };
 
   count() {
-    if (this.props.books && this.props.books.length > 0) {
-      this.props.books.map(book => {
-        console.log(book.readed);
+    if (Booklist.books && Booklist.books.length > 0) {
+      Booklist.books.map(book => {
         book.readed
           ? this.setState(state => {
               return { read: (state.read += 1) };
@@ -42,16 +76,17 @@ class Booklist extends React.Component {
   }
 
   render() {
-    if (this.props.books && this.props.books.length > 0) {
+    if (Booklist.books && Booklist.books.length > 0) {
       return (
         <div className="book-container">
           <HeadLine
+            rend={this.rendeIt}
             count={this.count}
             read={this.state.read}
             not_read={this.state.not_read}
-            len={this.props.books.length}
+            len={Booklist.books.length}
           />
-          {this.props.books.map(book => {
+          {Booklist.books.map(book => {
             return (
               <Book
                 className="new"
@@ -66,6 +101,9 @@ class Booklist extends React.Component {
               />
             );
           })}
+          <div>
+            <AddBook rend={this.rendeIt} />
+          </div>
         </div>
       );
     } else {
